@@ -4,18 +4,15 @@ import com.gojek.parking.model.ParkingLot;
 import com.gojek.parking.model.Vehicle;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.naming.SizeLimitExceededException;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ParkingLotTest {
+public class b  {
 
     ParkingLot underTest;
 
@@ -38,6 +35,7 @@ public class ParkingLotTest {
         assertThat( getSize(), is( 2 ) );
 
     }
+
     @Test(expected = DuplicateVehicleException.class)
     public void shouldNotAllowToParkSameVehicleTwice() throws DuplicateVehicleException, SizeLimitExceededException {
         Vehicle polo = new Car( "KA-01-UU-67677", "White" );
@@ -91,17 +89,27 @@ public class ParkingLotTest {
         Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
         Vehicle santro = new Car( "KA-01-UU-676675", "White" );
         Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
-        Integer poloSlot= underTest.park( polo );
+        Integer poloSlot = underTest.park( polo );
         Integer santroSlot = underTest.park( santro );
         underTest.park( beat );
         underTest.park( jazz );
 
         List<Integer> slotsByColor = underTest.getSlotsByColor( "White" );
 
-        assertThat( slotsByColor,hasItems( poloSlot,santroSlot ) );
+        assertThat( slotsByColor, hasItems( poloSlot, santroSlot ) );
 
     }
 
+    @Test
+    public void shouldBeAbleToGetSlotFromRegistrationNumber() throws DuplicateVehicleException, SizeLimitExceededException {
+        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
+        Integer poloSlot = underTest.park( polo );
+
+        Integer actualSlot = underTest.getSlotByRegistration( "KA-01-UU-67677" );
+
+        assertThat( poloSlot, is( equalTo( actualSlot ) ) );
+
+    }
 
 
 }

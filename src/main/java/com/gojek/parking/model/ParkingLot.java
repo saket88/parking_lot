@@ -68,4 +68,11 @@ public class ParkingLot {
                 .collect( Collectors.toList() );
     }
 
+    public Integer getSlotByRegistration( String registrationNumber ) {
+        return parkingMap.entrySet().stream()
+                .filter( vehicleIntegerEntry -> vehicleIntegerEntry.getKey().getRegistrationNumber().equals( registrationNumber ) )
+                .map( vehicleIntegerEntry -> vehicleIntegerEntry.getValue() )
+                .findAny()
+                .get();
+    }
 }
