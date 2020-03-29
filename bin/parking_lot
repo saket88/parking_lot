@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Add script to run program here.
-# Complete bin/setup.sh so that after it is
+# Complete bin/setup so that after it is
 # run, bin/parking_lot can be used to launch
 # it.
 arg1=$1
