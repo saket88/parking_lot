@@ -7,15 +7,13 @@ arg1=$1
 ##directory where jar file is located
 dir=target
 ##jar file name
-jar_name=parking_lot-1.0-SNAPSHOT.jar
+jar_name=parkinglot-1.0-SNAPSHOT.jar
 
 if [ -z "$1" ] ; then
-        cd ..
-        java -jar $dir/$jar_name
+        java -jar ../$dir/$jar_name
         exit 1
 
 else
-  cd ..
-	java -jar $dir/$jar_name $arg1
+	java -jar ../$dir/$jar_name $arg1
 
 fi
