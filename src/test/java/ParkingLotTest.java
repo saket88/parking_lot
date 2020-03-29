@@ -34,10 +34,10 @@ public class ParkingLotTest {
     public void shouldBeAbleToLeaveAVehicle() {
         Vehicle polo = new Car( "KA-01-UU-67677", "White" );
         Vehicle beat = new Car( "KA-01-UU-67678", "blue" );
-        underTest.park( polo );
+        Integer poloSlot = underTest.park( polo );
         underTest.park( beat );
 
-        underTest.leave( polo );
+        underTest.leave( poloSlot );
 
         assertThat( underTest.getParkingMap().keySet().size(), is( 1 ) );
 

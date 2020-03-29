@@ -35,7 +35,7 @@ public class ParkingLot {
         return parkingMap;
     }
 
-    public Integer leave( Vehicle vehicle ) {
-       return parkingMap.remove( vehicle );
+    public void leave( Integer vehicleSlot) {
+        parkingMap.values().remove( vehicleSlot );
     }
 }
