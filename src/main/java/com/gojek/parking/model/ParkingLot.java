@@ -1,9 +1,5 @@
 package com.gojek.parking.model;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ParkingLot {
@@ -15,7 +11,7 @@ public class ParkingLot {
     }
 
     private void setParkingMap() {
-        parkingMap = new ConcurrentHashMap<Vehicle, Integer>( capacity );
+        parkingMap = new ConcurrentHashMap<>( capacity );
     }
 
     public ParkingLot( int capacity ) {
@@ -31,5 +27,9 @@ public class ParkingLot {
 
     public ConcurrentHashMap<Vehicle, Integer> getParkingMap() {
         return parkingMap;
+    }
+
+    public void leave( Vehicle vehicle ) {
+        parkingMap.remove( vehicle );
     }
 }

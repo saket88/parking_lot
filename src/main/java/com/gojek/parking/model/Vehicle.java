@@ -1,7 +1,5 @@
 package com.gojek.parking.model;
 
-import java.util.Map;
-
 public class Vehicle {
     private final String registrationNumber;
     private final String color;
