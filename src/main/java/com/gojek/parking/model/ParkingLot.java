@@ -6,12 +6,14 @@ import javax.naming.SizeLimitExceededException;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ParkingLot {
     private final int capacity;
     private ConcurrentHashMap<Vehicle, Integer> parkingMap;
+    private TreeSet<Integer> availableSlots;
     private static final int STARTING_SLOT = 1;
 
     public int getCapacity() {
@@ -25,6 +27,7 @@ public class ParkingLot {
     public ParkingLot( int capacity ) {
         this.capacity = capacity;
         setParkingMap();
+        availableSlots= new TreeSet<>( );
     }
 
     public Integer park( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
@@ -46,6 +49,11 @@ public class ParkingLot {
     }
 
     private int determineImmediateSlot() {
+        if ( !availableSlots.isEmpty() ){
+            Integer first = availableSlots.first();
+            availableSlots.remove( first );
+            return first;
+        }
         return Collections.max( parkingMap.values() ) + 1;
     }
 
@@ -78,6 +86,7 @@ public class ParkingLot {
         boolean isPresent = parkingMap.values().remove( vehicleSlot );
         if ( !isPresent )
             throw new NoSuchElementException( " The slot " + vehicleSlot + " is not available" );
+        availableSlots.add( vehicleSlot );
         return isPresent;
     }
 

@@ -88,10 +88,11 @@ public class ParkingLotTest {
 
     @Test
     public void shouldBeAbleToGetSlotNumbersByColor() throws DuplicateVehicleException, SizeLimitExceededException {
-        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
-        Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
-        Vehicle santro = new Car( "KA-01-UU-676675", "White" );
-        Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
+        TestVehicles testVehicles = new TestVehicles().invoke();
+        Vehicle polo = testVehicles.getPolo();
+        Vehicle beat = testVehicles.getBeat();
+        Vehicle santro = testVehicles.getSantro();
+        Vehicle jazz = testVehicles.getJazz();
         Integer poloSlot = underTest.park( polo );
         Integer santroSlot = underTest.park( santro );
         underTest.park( beat );
@@ -105,10 +106,12 @@ public class ParkingLotTest {
 
     @Test
     public void shouldBeAbleToGetRegistrationsByColor() throws DuplicateVehicleException, SizeLimitExceededException {
-        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
-        Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
-        Vehicle santro = new Car( "KA-01-UU-676675", "White" );
-        Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
+        TestVehicles testVehicles = new TestVehicles().invoke();
+        Vehicle polo = testVehicles.getPolo();
+        Vehicle beat = testVehicles.getBeat();
+        Vehicle santro = testVehicles.getSantro();
+        Vehicle jazz = testVehicles.getJazz();
+
         underTest.park( polo );
         underTest.park( beat );
         underTest.park( santro );
@@ -159,16 +162,16 @@ public class ParkingLotTest {
 
     @Test
     public void shouldBeAbleToGetTheImmediateSlotAvailableForParking() throws DuplicateVehicleException, SizeLimitExceededException {
-        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
-        Vehicle beat = new Car( "KA-01-UU-67678", "blue" );
-        Vehicle mercedes = new Car( "KA-01-UU-67679", "magenta" );
-        Vehicle vento = new Car( "KA-01-UU-67272", "yellow" );
-        Vehicle santro = new Car( "KA-01-UU-84785", "blue" );
+        TestVehicles testVehicles = new TestVehicles().invoke();
+        Vehicle polo = testVehicles.getPolo();
+        Vehicle beat = testVehicles.getBeat();
+        Vehicle santro = testVehicles.getSantro();
+        Vehicle jazz = testVehicles.getJazz();
+
         underTest.park( polo );
         Integer beatSlot = underTest.park( beat );
-        underTest.park( mercedes );
-        underTest.park( vento );
         underTest.park( santro );
+        underTest.park( jazz );
 
         underTest.leave( beatSlot );
 
