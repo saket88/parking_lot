@@ -9,7 +9,6 @@ public class ParkingMain
 
     public static void main( String... args){
         CommandLineProcessor processor = new CommandLineProcessor();
-
         BufferedReader bufferReader = null;
         String input = null;
         try
@@ -18,7 +17,7 @@ public class ParkingMain
             printUsage();
             switch (args.length)
             {
-                case 0: // Interactive: command-line input/output
+                case 0:
                 {
                     System.out.println("Please Enter 'exit' to end Execution");
                     System.out.println("Input:");
@@ -53,7 +52,7 @@ public class ParkingMain
                     }
                     break;
                 }
-                case 1:// File input/output
+                case 1:
                 {
                     File inputFile = new File(args[0]);
                     try

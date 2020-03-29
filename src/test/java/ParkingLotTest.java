@@ -76,7 +76,7 @@ public class ParkingLotTest {
     }
 
     @Test(expected = SizeLimitExceededException.class)
-    public void shouldBeAbleToParkVehicleOneFull() throws DuplicateVehicleException, SizeLimitExceededException {
+    public void shouldNotBeAbleToParkVehicleIfFull() throws DuplicateVehicleException, SizeLimitExceededException {
         underTest = new ParkingLot( 1 );
         Vehicle polo = new Car( "KA-01-UU-67677", "White" );
         Vehicle beat = new Car( "KA-01-UU-67678", "blue" );
