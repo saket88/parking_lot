@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ParkingLot {
     private final int capacity;
-    private ConcurrentHashMap <Vehicle,Integer> parkingMap ;
+    private ConcurrentHashMap<Vehicle, Integer> parkingMap;
     private static final int STARTING_SLOT = 1;
 
     public int getCapacity() {
@@ -42,7 +42,7 @@ public class ParkingLot {
     }
 
     private void constructMap( Vehicle vehicle, int value ) {
-        parkingMap.put( vehicle , value );
+        parkingMap.put( vehicle, value );
     }
 
     private int determineImmediateSlot() {
@@ -50,19 +50,19 @@ public class ParkingLot {
     }
 
     private boolean isStartingMap( Vehicle vehicle ) {
-        if ( parkingMap.size()==0 ){
-            parkingMap.putIfAbsent( vehicle ,1 );
+        if ( parkingMap.size() == 0 ) {
+            parkingMap.putIfAbsent( vehicle, 1 );
             return true;
         }
         return false;
     }
 
     private void validate( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
-        if ( getSlot( vehicle ) !=null ){
-            throw new DuplicateVehicleException("This is already present");
+        if ( getSlot( vehicle ) != null ) {
+            throw new DuplicateVehicleException( "This is already present" );
         }
-        if ( parkingMap.size()==capacity ){
-            throw new SizeLimitExceededException( "The parking space is Full" );
+        if ( parkingMap.size() == capacity ) {
+            throw new SizeLimitExceededException( "Sorry, parking lot is already full" );
         }
     }
 
@@ -74,11 +74,11 @@ public class ParkingLot {
         return parkingMap;
     }
 
-    public boolean leave( Integer vehicleSlot) {
-        boolean isPresent=  parkingMap.values().remove( vehicleSlot );
-         if ( !isPresent )
-             throw new NoSuchElementException(" The slot "+vehicleSlot +" is not available");
-         return isPresent;
+    public boolean leave( Integer vehicleSlot ) {
+        boolean isPresent = parkingMap.values().remove( vehicleSlot );
+        if ( !isPresent )
+            throw new NoSuchElementException( " The slot " + vehicleSlot + " is not available" );
+        return isPresent;
     }
 
     public List<Integer> getSlotsByColor( String color ) {
@@ -90,7 +90,8 @@ public class ParkingLot {
 
     public Integer getSlotByRegistration( String registrationNumber ) {
         return parkingMap.entrySet().stream()
-                .filter( vehicleIntegerEntry -> vehicleIntegerEntry.getKey().getRegistrationNumber().equals( registrationNumber ) )
+                .filter( vehicleIntegerEntry -> vehicleIntegerEntry.getKey().getRegistrationNumber()
+                        .equals( registrationNumber ) )
                 .map( vehicleIntegerEntry -> vehicleIntegerEntry.getValue() )
                 .findAny()
                 .get();
@@ -98,7 +99,8 @@ public class ParkingLot {
 
     public List<Vehicle> getStatus() {
         return parkingMap.entrySet().stream()
-                .map( vehicleIntegerEntry ->  new Vehicle(vehicleIntegerEntry.getKey().getRegistrationNumber(),vehicleIntegerEntry.getKey().getColor(), vehicleIntegerEntry.getValue() ) )
+                .map( vehicleIntegerEntry -> new Vehicle( vehicleIntegerEntry.getKey().getRegistrationNumber(),
+                        vehicleIntegerEntry.getKey().getColor(), vehicleIntegerEntry.getValue() ) )
                 .collect( Collectors.toList() );
     }
 

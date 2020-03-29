@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.apache.commons.lang3.builder.CompareToBuilder.reflectionCompare;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class ParkingLotTest {
 

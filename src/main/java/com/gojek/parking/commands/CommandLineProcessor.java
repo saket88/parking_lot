@@ -7,6 +7,7 @@ import com.gojek.parking.model.Vehicle;
 
 import javax.naming.SizeLimitExceededException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandLineProcessor {
 
@@ -42,21 +43,36 @@ public class CommandLineProcessor {
 
                 break;
             case Constants.STATUS:
-                printStatus( parkingLot.getStatus());
+                printStatus( parkingLot.getStatus() );
                 break;
             case Constants.REGISTRATION_NUMBERS_BY_COLOR:
-                parkingLot.getRegistrationsByColor( inputs[1] );
+                printRegistrations( parkingLot.getRegistrationsByColor( inputs[1] ) );
                 break;
             case Constants.SLOT_NUMBERS_BY_COLOR:
-                parkingLot.getSlotsByColor( inputs[1] );
+                printSlots( parkingLot.getSlotsByColor( inputs[1] ) );
                 break;
             case Constants.SLOT_NUMBER_BY_REGISTRATIONNUMBER:
-                parkingLot.getSlotByRegistration( inputs[1] );
+                printSlot(parkingLot.getSlotByRegistration( inputs[1] ));
                 break;
             default:
                 break;
         }
 
+    }
+
+    private void printSlot( Integer slotByRegistration ) {
+        System.out.println( slotByRegistration );
+    }
+
+    private void printSlots( List<Integer> slotsByColor ) {
+        System.out.println( slotsByColor.stream()
+                .map( String::valueOf )
+                .collect( Collectors.joining( "," ) ) );
+    }
+
+    private void printRegistrations( List<Vehicle> registrationsByColor ) {
+        System.out.println( registrationsByColor.stream().map( vehicle -> vehicle.getRegistrationNumber() )
+                .collect( Collectors.joining( "," ) ) );
     }
 
     private void printStatus( List<Vehicle> status ) {
