@@ -1,5 +1,7 @@
 package com.gojek.parking.model;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ParkingLot {
@@ -19,17 +21,21 @@ public class ParkingLot {
         setParkingMap();
     }
 
-    public void park( Vehicle vehicle ) {
-       if ( parkingMap.computeIfPresent(  vehicle,( vehicle1, slotNumber)->slotNumber +1 )==null ){
-           parkingMap.put( vehicle,1 );
+    public Integer park( Vehicle vehicle ) {
+        if ( parkingMap.size()==0 ){
+            parkingMap.putIfAbsent( vehicle ,1 );
+            return parkingMap.get( vehicle);
         }
+
+        parkingMap.put( vehicle , Collections.max( parkingMap.values() ) +1 );
+       return parkingMap.get( vehicle );
     }
 
     public ConcurrentHashMap<Vehicle, Integer> getParkingMap() {
         return parkingMap;
     }
 
-    public void leave( Vehicle vehicle ) {
-        parkingMap.remove( vehicle );
+    public Integer leave( Vehicle vehicle ) {
+       return parkingMap.remove( vehicle );
     }
 }
