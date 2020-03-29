@@ -58,7 +58,6 @@ public class ParkingMain
                 }
                 case 1:// File input/output
                 {
-                    System.out.println( args [0]);
                     File inputFile = new File(args[0]);
                     try
                     {

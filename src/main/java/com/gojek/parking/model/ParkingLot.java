@@ -74,10 +74,11 @@ public class ParkingLot {
         return parkingMap;
     }
 
-    public void leave( Integer vehicleSlot) {
+    public boolean leave( Integer vehicleSlot) {
         boolean isPresent=  parkingMap.values().remove( vehicleSlot );
          if ( !isPresent )
              throw new NoSuchElementException(" The slot "+vehicleSlot +" is not available");
+         return isPresent;
     }
 
     public List<Integer> getSlotsByColor( String color ) {
@@ -98,6 +99,13 @@ public class ParkingLot {
     public List<Vehicle> getStatus() {
         return parkingMap.entrySet().stream()
                 .map( vehicleIntegerEntry ->  new Vehicle(vehicleIntegerEntry.getKey().getRegistrationNumber(),vehicleIntegerEntry.getKey().getColor(), vehicleIntegerEntry.getValue() ) )
+                .collect( Collectors.toList() );
+    }
+
+    public List<Vehicle> getRegistrationsByColor( String color ) {
+        return parkingMap.entrySet().stream()
+                .filter( vehicleIntegerEntry -> vehicleIntegerEntry.getKey().getColor().equals( color ) )
+                .map( vehicleIntegerEntry -> vehicleIntegerEntry.getKey() )
                 .collect( Collectors.toList() );
     }
 }
