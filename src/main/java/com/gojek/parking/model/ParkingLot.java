@@ -94,4 +94,10 @@ public class ParkingLot {
                 .findAny()
                 .get();
     }
+
+    public List<Vehicle> getStatus() {
+        return parkingMap.entrySet().stream()
+                .map( vehicleIntegerEntry ->  new Vehicle(vehicleIntegerEntry.getKey().getRegistrationNumber(),vehicleIntegerEntry.getKey().getColor(), vehicleIntegerEntry.getValue() ) )
+                .collect( Collectors.toList() );
+    }
 }

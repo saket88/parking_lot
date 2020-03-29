@@ -6,11 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.naming.SizeLimitExceededException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.apache.commons.lang3.builder.CompareToBuilder.reflectionCompare;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class ParkingLotTest {
 
@@ -100,14 +103,32 @@ public class ParkingLotTest {
 
     }
 
+
     @Test
-    public void shouldBeAbleToGetSlotFromRegistrationNumber() throws DuplicateVehicleException, SizeLimitExceededException {
+    public void shouldBeAbleToGetStatus() throws DuplicateVehicleException, SizeLimitExceededException {
         Vehicle polo = new Car( "KA-01-UU-67677", "White" );
-        Integer poloSlot = underTest.park( polo );
+        Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
+        Vehicle santro = new Car( "KA-01-UU-676675", "White" );
+        Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
 
-        Integer actualSlot = underTest.getSlotByRegistration( "KA-01-UU-67677" );
+        Integer poloSlot =  underTest.park( polo );
+        Integer santroSlot = underTest.park( santro );
+        Integer beatSlot = underTest.park( beat );
+        Integer jazzSlot = underTest.park( jazz );
 
-        assertThat( poloSlot, is( equalTo( actualSlot ) ) );
+        Vehicle newPolo = new Car( "KA-01-UU-67677", "White" ,poloSlot);
+        Vehicle newBeat = new Car( "KA-01-UU-67678", "Blue",beatSlot );
+        Vehicle newSantro = new Car( "KA-01-UU-676675", "White" ,santroSlot);
+        Vehicle newJazz = new Car( "KA-01-UU-52345", "Red" ,jazzSlot);
+
+        List<Vehicle> vehicles = underTest.getStatus();
+        List<Vehicle> expectedVehicles = new ArrayList<>(  );
+        expectedVehicles.add( newPolo );
+        expectedVehicles.add( newBeat );
+        expectedVehicles.add( newSantro );
+        expectedVehicles.add( newJazz );
+
+        assertThat( reflectionCompare(vehicles, expectedVehicles),is( 0 ));
 
     }
 
