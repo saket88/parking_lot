@@ -1,7 +1,11 @@
 package com.gojek.parking.model;
 
+import com.gojek.parking.exception.DuplicateVehicleException;
+
+import javax.naming.SizeLimitExceededException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ParkingLot {
@@ -21,14 +25,28 @@ public class ParkingLot {
         setParkingMap();
     }
 
-    public Integer park( Vehicle vehicle ) {
+    public Integer park( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
+        validate( vehicle );
         if ( parkingMap.size()==0 ){
             parkingMap.putIfAbsent( vehicle ,1 );
-            return parkingMap.get( vehicle);
+            return 1;
         }
+        int value = Collections.max( parkingMap.values() ) + 1;
+        parkingMap.put( vehicle , value );
+       return value;
+    }
 
-        parkingMap.put( vehicle , Collections.max( parkingMap.values() ) +1 );
-       return parkingMap.get( vehicle );
+    private void validate( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
+        if ( getSlot( vehicle ) !=null ){
+            throw new DuplicateVehicleException("This is already present");
+        }
+        if ( parkingMap.size()==capacity ){
+            throw new SizeLimitExceededException( "The parking space is Full" );
+        }
+    }
+
+    private Integer getSlot( Vehicle vehicle ) {
+        return parkingMap.get( vehicle );
     }
 
     public ConcurrentHashMap<Vehicle, Integer> getParkingMap() {
@@ -36,6 +54,8 @@ public class ParkingLot {
     }
 
     public void leave( Integer vehicleSlot) {
-        parkingMap.values().remove( vehicleSlot );
+        boolean isPresent=  parkingMap.values().remove( vehicleSlot );
+         if ( !isPresent )
+             throw new NoSuchElementException(" The slotv"+vehicleSlot +"vis not available");
     }
 }
