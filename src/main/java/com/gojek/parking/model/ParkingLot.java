@@ -3,7 +3,6 @@ package com.gojek.parking.model;
 import com.gojek.parking.exception.DuplicateVehicleException;
 
 import javax.naming.SizeLimitExceededException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 public class ParkingLot {
     private final int capacity;
     private ConcurrentHashMap <Vehicle,Integer> parkingMap ;
+    private static final int STARTING_SLOT = 1;
 
     public int getCapacity() {
         return capacity;
@@ -29,13 +29,32 @@ public class ParkingLot {
 
     public Integer park( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
         validate( vehicle );
+        if ( isStartingMap( vehicle ) ) {
+            return STARTING_SLOT;
+        }
+        return slotOf( vehicle );
+    }
+
+    private Integer slotOf( Vehicle vehicle ) {
+        int value = determineImmediateSlot();
+        constructMap( vehicle, value );
+        return value;
+    }
+
+    private void constructMap( Vehicle vehicle, int value ) {
+        parkingMap.put( vehicle , value );
+    }
+
+    private int determineImmediateSlot() {
+        return Collections.max( parkingMap.values() ) + 1;
+    }
+
+    private boolean isStartingMap( Vehicle vehicle ) {
         if ( parkingMap.size()==0 ){
             parkingMap.putIfAbsent( vehicle ,1 );
-            return 1;
+            return true;
         }
-        int value = Collections.max( parkingMap.values() ) + 1;
-        parkingMap.put( vehicle , value );
-       return value;
+        return false;
     }
 
     private void validate( Vehicle vehicle ) throws DuplicateVehicleException, SizeLimitExceededException {
@@ -58,7 +77,7 @@ public class ParkingLot {
     public void leave( Integer vehicleSlot) {
         boolean isPresent=  parkingMap.values().remove( vehicleSlot );
          if ( !isPresent )
-             throw new NoSuchElementException(" The slotv"+vehicleSlot +"vis not available");
+             throw new NoSuchElementException(" The slot "+vehicleSlot +" is not available");
     }
 
     public List<Integer> getSlotsByColor( String color ) {
