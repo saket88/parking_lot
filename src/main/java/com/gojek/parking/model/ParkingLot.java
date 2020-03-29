@@ -8,14 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ParkingLot {
     private final int capacity;
-    private ConcurrentHashMap <Integer,Vehicle> parkingMap ;
+    private ConcurrentHashMap <Vehicle,Integer> parkingMap ;
 
     public int getCapacity() {
         return capacity;
     }
 
     private void setParkingMap() {
-        parkingMap = new ConcurrentHashMap<Integer, Vehicle>( capacity );
+        parkingMap = new ConcurrentHashMap<Vehicle, Integer>( capacity );
     }
 
     public ParkingLot( int capacity ) {
@@ -24,10 +24,12 @@ public class ParkingLot {
     }
 
     public void park( Vehicle vehicle ) {
-        parkingMap.put(1,vehicle);
+       if ( parkingMap.computeIfPresent(  vehicle,( vehicle1, slotNumber)->slotNumber +1 )==null ){
+           parkingMap.put( vehicle,1 );
+        }
     }
 
-    public ConcurrentHashMap<Integer, Vehicle> getParkingMap() {
+    public ConcurrentHashMap<Vehicle, Integer> getParkingMap() {
         return parkingMap;
     }
 }

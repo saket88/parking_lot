@@ -12,19 +12,23 @@ public class ParkingLotTest {
     ParkingLot underTest;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         underTest = new ParkingLot( 100 );
     }
+
     @Test
-    public void shouldCreateAParkingLot(){
-        assertThat(underTest.getCapacity(),is(100));
+    public void shouldCreateAParkingLot() {
+        assertThat( underTest.getCapacity(), is( 100 ) );
     }
 
     @Test
-    public void shouldBeAbleToParkVehicle(){
-        Vehicle car = new Car( "KA-01-UU-67677", "White" );
-        underTest.park( car );
-        assertThat( underTest.getParkingMap().keySet().size(),is(1)  );
+    public void shouldBeAbleToParkVehicle() {
+        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
+        Vehicle beat = new Car( "KA-01-UU-67678", "blue" );
+        underTest.park( polo );
+        underTest.park( beat );
+        assertThat( underTest.getParkingMap().keySet().size(), is( 2 ) );
 
     }
+
 }
