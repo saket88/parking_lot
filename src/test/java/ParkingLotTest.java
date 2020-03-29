@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class b  {
+public class ParkingLotTest {
 
     ParkingLot underTest;
 
