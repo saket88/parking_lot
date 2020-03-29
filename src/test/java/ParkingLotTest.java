@@ -129,20 +129,22 @@ public class ParkingLotTest {
 
     @Test
     public void shouldBeAbleToGetStatus() throws DuplicateVehicleException, SizeLimitExceededException {
-        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
-        Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
-        Vehicle santro = new Car( "KA-01-UU-676675", "White" );
-        Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
+        TestVehicles testVehicles = new TestVehicles().invoke();
+        Vehicle polo = testVehicles.getPolo();
+        Vehicle beat = testVehicles.getBeat();
+        Vehicle santro = testVehicles.getSantro();
+        Vehicle jazz = testVehicles.getJazz();
 
         Integer poloSlot =  underTest.park( polo );
         Integer santroSlot = underTest.park( santro );
         Integer beatSlot = underTest.park( beat );
         Integer jazzSlot = underTest.park( jazz );
 
-        Vehicle newPolo = new Car( "KA-01-UU-67677", "White" ,poloSlot);
-        Vehicle newBeat = new Car( "KA-01-UU-67678", "Blue",beatSlot );
-        Vehicle newSantro = new Car( "KA-01-UU-676675", "White" ,santroSlot);
-        Vehicle newJazz = new Car( "KA-01-UU-52345", "Red" ,jazzSlot);
+        NewTestVehicles newTestVehicles = new NewTestVehicles( poloSlot, santroSlot, beatSlot, jazzSlot ).invoke();
+        Vehicle newPolo = newTestVehicles.getNewPolo();
+        Vehicle newBeat = newTestVehicles.getNewBeat();
+        Vehicle newSantro = newTestVehicles.getNewSantro();
+        Vehicle newJazz = newTestVehicles.getNewJazz();
 
         List<Vehicle> vehicles = underTest.getStatus();
         List<Vehicle> expectedVehicles = new ArrayList<>(  );
@@ -155,5 +157,100 @@ public class ParkingLotTest {
 
     }
 
+    @Test
+    public void shouldBeAbleToGetTheImmediateSlotAvailableForParking() throws DuplicateVehicleException, SizeLimitExceededException {
+        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
+        Vehicle beat = new Car( "KA-01-UU-67678", "blue" );
+        Vehicle mercedes = new Car( "KA-01-UU-67679", "magenta" );
+        Vehicle vento = new Car( "KA-01-UU-67272", "yellow" );
+        Vehicle santro = new Car( "KA-01-UU-84785", "blue" );
+        underTest.park( polo );
+        Integer beatSlot = underTest.park( beat );
+        underTest.park( mercedes );
+        underTest.park( vento );
+        underTest.park( santro );
 
+        underTest.leave( beatSlot );
+
+        Vehicle duster = new Car( "KA-01-UU-35268", "Silver" );
+        Integer dusterSlot = underTest.park( duster );
+
+        assertThat( dusterSlot, is( beatSlot ) );
+
+
+    }
+
+
+    private class TestVehicles {
+        private Vehicle polo;
+        private Vehicle beat;
+        private Vehicle santro;
+        private Vehicle jazz;
+
+        public Vehicle getPolo() {
+            return polo;
+        }
+
+        public Vehicle getBeat() {
+            return beat;
+        }
+
+        public Vehicle getSantro() {
+            return santro;
+        }
+
+        public Vehicle getJazz() {
+            return jazz;
+        }
+
+        public TestVehicles invoke() {
+            polo = new Car( "KA-01-UU-67677", "White" );
+            beat = new Car( "KA-01-UU-67678", "Blue" );
+            santro = new Car( "KA-01-UU-676675", "White" );
+            jazz = new Car( "KA-01-UU-52345", "Red" );
+            return this;
+        }
+    }
+
+    private class NewTestVehicles {
+        private Integer poloSlot;
+        private Integer santroSlot;
+        private Integer beatSlot;
+        private Integer jazzSlot;
+        private Vehicle newPolo;
+        private Vehicle newBeat;
+        private Vehicle newSantro;
+        private Vehicle newJazz;
+
+        public NewTestVehicles( Integer poloSlot, Integer santroSlot, Integer beatSlot, Integer jazzSlot ) {
+            this.poloSlot = poloSlot;
+            this.santroSlot = santroSlot;
+            this.beatSlot = beatSlot;
+            this.jazzSlot = jazzSlot;
+        }
+
+        public Vehicle getNewPolo() {
+            return newPolo;
+        }
+
+        public Vehicle getNewBeat() {
+            return newBeat;
+        }
+
+        public Vehicle getNewSantro() {
+            return newSantro;
+        }
+
+        public Vehicle getNewJazz() {
+            return newJazz;
+        }
+
+        public NewTestVehicles invoke() {
+            newPolo = new Car( "KA-01-UU-67677", "White", poloSlot );
+            newBeat = new Car( "KA-01-UU-67678", "Blue", beatSlot );
+            newSantro = new Car( "KA-01-UU-676675", "White", santroSlot );
+            newJazz = new Car( "KA-01-UU-52345", "Red", jazzSlot );
+            return this;
+        }
+    }
 }
