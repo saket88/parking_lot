@@ -3,10 +3,12 @@ package com.gojek.parking.model;
 import com.gojek.parking.exception.DuplicateVehicleException;
 
 import javax.naming.SizeLimitExceededException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class ParkingLot {
     private final int capacity;
@@ -58,4 +60,12 @@ public class ParkingLot {
          if ( !isPresent )
              throw new NoSuchElementException(" The slotv"+vehicleSlot +"vis not available");
     }
+
+    public List<Integer> getSlotsByColor( String color ) {
+        return parkingMap.entrySet().stream()
+                .filter( vehicleIntegerEntry -> vehicleIntegerEntry.getKey().getColor().equals( color ) )
+                .map( vehicleIntegerEntry -> vehicleIntegerEntry.getValue() )
+                .collect( Collectors.toList() );
+    }
+
 }
