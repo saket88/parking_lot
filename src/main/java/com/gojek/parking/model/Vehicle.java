@@ -30,7 +30,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "          " + slotNo +
+        return "      " + slotNo +
                 "          " + registrationNumber +
                 "          " + color;
     }

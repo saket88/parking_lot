@@ -103,6 +103,29 @@ public class ParkingLotTest {
 
     }
 
+    @Test
+    public void shouldBeAbleToGetRegistrationsByColor() throws DuplicateVehicleException, SizeLimitExceededException {
+        Vehicle polo = new Car( "KA-01-UU-67677", "White" );
+        Vehicle beat = new Car( "KA-01-UU-67678", "Blue" );
+        Vehicle santro = new Car( "KA-01-UU-676675", "White" );
+        Vehicle jazz = new Car( "KA-01-UU-52345", "Red" );
+        underTest.park( polo );
+        underTest.park( beat );
+        underTest.park( santro );
+        underTest.park( jazz );
+
+        List<Vehicle> slotsByColor = underTest.getRegistrationsByColor( "White" );
+
+        List<Vehicle> expectedVehicles = new ArrayList<>(  );
+        expectedVehicles.add( polo );
+        expectedVehicles.add( santro );
+
+
+        assertThat( reflectionCompare(slotsByColor, expectedVehicles),is( 0 ));
+
+
+    }
+
 
     @Test
     public void shouldBeAbleToGetStatus() throws DuplicateVehicleException, SizeLimitExceededException {

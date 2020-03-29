@@ -14,11 +14,8 @@ public class ParkingMain
         String input = null;
         try
         {
-            System.out.println("\n\n\n\n\n");
             System.out.println("Parking Lot For GoJek");
-
             printUsage();
-            System.out.println( args.length );
             switch (args.length)
             {
                 case 0: // Interactive: command-line input/output
